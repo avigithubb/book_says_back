@@ -38,7 +38,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "https://book-says-up.vercel.app/",
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization']
 };
