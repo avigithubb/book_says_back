@@ -52,15 +52,15 @@ app.use(express.static("public"));
 
 
 
-const db = new pg.Client({
-    user: process.env.USERNAME,
-    host: process.env.MYHOST,
-    database: process.env.MYDATABASE,
-    password: process.env.MYPASSWORD,
-    port: process.env.MYPORT
-});
+// const db = new pg.Client({
+//     user: process.env.USERNAME,
+//     host: process.env.MYHOST,
+//     database: process.env.MYDATABASE,
+//     password: process.env.MYPASSWORD,
+//     port: process.env.MYPORT
+// });
 
-db.connect();
+// db.connect();
 
 
 app.get("/", async(req, res) => {
