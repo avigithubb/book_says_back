@@ -7,14 +7,15 @@ import session from "express-session";
 import passport from "passport";
 import { Strategy } from "passport-local";
 import bcrypt from "bcrypt";
-import { Pool } from "pg";
+import pkg from 'pg';
+
 
 
 const app = express();
 const port = 3000;
 dotenv.config();
 const saltRounds = 10;
-
+const { Pool } = pkg;
 
 const db = new Pool({
     connectionString: process.env.DATABASE_URL,
