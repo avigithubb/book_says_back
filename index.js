@@ -6,7 +6,7 @@ import cors from "cors";
 import session from "express-session";
 import passport from "passport";
 import { Strategy } from "passport-local";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import pkg from 'pg';
 
 
