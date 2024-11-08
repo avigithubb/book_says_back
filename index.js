@@ -31,11 +31,11 @@ const db = new Pool({
 });
 
 
-await redisClient.connect().then(() => {
-    console.log('Connected to Redis');
-  }).catch((err) => {
-    console.error('Could not connect to Redis', err);
-  });
+// await redisClient.connect().then(() => {
+//     console.log('Connected to Redis');
+//   }).catch((err) => {
+//     console.error('Could not connect to Redis', err);
+//   });
 
 app.use(session({
     store: new RedisStore({ client: redisClient }),
