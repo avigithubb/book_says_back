@@ -18,7 +18,7 @@ dotenv.config();
 const saltRounds = 10;
 const { Pool } = pkg;
 const {createClient} = pkgs;
-const RedisStore = new connectRedis(session);
+const RedisStore = connectRedis(session);
 const redisClient = createClient;
 
 
@@ -31,6 +31,11 @@ const db = new Pool({
 });
 
 redisClient.on('error', (err) => console.error('Redis client error', err));
+redisClient.connect().then(() => {
+    console.log('Connected to Redis');
+  }).catch((err) => {
+    console.error('Could not connect to Redis', err);
+  });
 
 app.use(session({
     store: new RedisStore({ client: redisClient }),
