@@ -8,8 +8,10 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import bcrypt from "bcryptjs";
 import pkg from 'pg';
-import pkgs from "ioredis";
+// import pkgs from "ioredis";
 import connectRedis from "connect-redis";
+import { createClient } from 'redis';
+
 
 
 const app = express();
@@ -17,7 +19,7 @@ const port = 3000;
 dotenv.config();
 const saltRounds = 10;
 const { Pool } = pkg;
-const {createClient} = pkgs;
+// const {createClient} = pkgs;
 const RedisStore = connectRedis(session);
 const redisClient = createClient;
 
@@ -31,7 +33,7 @@ const db = new Pool({
 });
 
 redisClient.on('error', (err) => console.error('Redis client error', err));
-redisClient.connect().then(() => {
+await redisClient.connect().then(() => {
     console.log('Connected to Redis');
   }).catch((err) => {
     console.error('Could not connect to Redis', err);
