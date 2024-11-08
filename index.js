@@ -8,7 +8,8 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import bcrypt from "bcryptjs";
 import pkg from 'pg';
-
+import {createClient} from "ioredis";
+import connectRedis from "connect-redis";
 
 
 const app = express();
@@ -16,21 +17,27 @@ const port = 3000;
 dotenv.config();
 const saltRounds = 10;
 const { Pool } = pkg;
+const RedisStore = connectRedis(session);
+const redisClient = createClient;
+
 
 const db = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
       rejectUnauthorized: false, 
     },
-  });
+});
+
+redisClient.on('error', (err) => console.error('Redis client error', err));
 
 app.use(session({
+    store: new RedisStore({ client: redisClient }),
     secret: process.env.SESSIONSECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
         maxAge: 1000 * 60 * 60 * 24,
-        secure: false,  
+        secure: process.env.NODE_ENV === 'production',  
         httpOnly: true
     }
 }))
