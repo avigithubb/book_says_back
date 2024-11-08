@@ -79,7 +79,7 @@ app.use(express.static("public"));
 
 
 app.get("/", async(req, res) => {
-    const users = await db.query("SELECT * FROM Users");
+    const users = await db.query("SELECT * FROM Book_says.Users");
     
     return res.send(users.rows);
 })
@@ -88,7 +88,7 @@ app.get("/search_user", async(req, res) => {
     try{
     const username = req.query.user;
 
-    const user = await db.query("SELECT * from Users WHERE username = $1", [username]);
+    const user = await db.query("SELECT * from Book_says.Users WHERE username = $1", [username]);
 
     res.send(user.rows);
     }
@@ -107,7 +107,7 @@ app.post("/register", async(req, res) =>{
         
 
         try{
-            const checkResult = await db.query("SELECT * FROM Users WHERE email = $1", [email]);
+            const checkResult = await db.query("SELECT * FROM Book_says.Users WHERE email = $1", [email]);
 
             if(checkResult.rows.length > 0 ){
                 res.send({msg: "failure"});
@@ -116,7 +116,7 @@ app.post("/register", async(req, res) =>{
                     if(err){
                         res.send({msg: "failure"});
                     }else{
-                        const result = await db.query("INSERT INTO Users (name, username, email, password, collection, about) VALUES ( $1, $2, $3, $4, $5, $6 ) RETURNING *", [name, username, email, hash, collection, about]);
+                        const result = await db.query("INSERT INTO Book_says.Users (name, username, email, password, collection, about) VALUES ( $1, $2, $3, $4, $5, $6 ) RETURNING *", [name, username, email, hash, collection, about]);
                         const user = result.rows[0];
                         
                         req.login(user, (err) => {
@@ -146,7 +146,7 @@ app.get("/get-user", async(req, res) =>{
         const username = req.query.username;
        
 
-        const user = await db.query("SELECT * FROM Users WHERE username = $1", [username]);
+        const user = await db.query("SELECT * FROM Book_says.Users WHERE username = $1", [username]);
         
 
         if(user.rows == ""){
@@ -169,9 +169,9 @@ app.get("/get-user-books", async(req, res) =>{
         const username = req.query.username;
         
 
-        const user = await db.query("SELECT * FROM Users WHERE username = $1", [username]);
+        const user = await db.query("SELECT * FROM Book_says.Users WHERE username = $1", [username]);
         
-        const user_data = await db.query("SELECT * FROM Users JOIN books ON Users.id = books.user_id WHERE Users.id = $1", [user.rows[0].id]);
+        const user_data = await db.query("SELECT * FROM Book_says.Users JOIN Book_says.books ON Users.id = books.user_id WHERE Users.id = $1", [user.rows[0].id]);
         
         if(user_data.rows == ""){
             res.send({msg: "failure"});
@@ -193,7 +193,7 @@ app.all("/get_book", async(req, res) => {
 
         const bookIsbn = req.query.book_isbn;
         
-        const book_data = await db.query("SELECT * FROM books WHERE isbn = $1", [bookIsbn]);
+        const book_data = await db.query("SELECT * FROM Book_says.books WHERE isbn = $1", [bookIsbn]);
        
         if(book_data.rows == ""){
             res.send({msg: "failure"});
@@ -278,7 +278,7 @@ app.all("/create", async(req, res) => {
             const rating = req.query.rating;
           
 
-            await db.query("INSERT INTO books (book_name, author_name, isbn, description, notes, cover, date, rating, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) ", [book_name.toUpperCase(), author_name.toUpperCase(), isbn, description, notes, cover, date, rating, user_id]);
+            await db.query("INSERT INTO Book_says.books (book_name, author_name, isbn, description, notes, cover, date, rating, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) ", [book_name.toUpperCase(), author_name.toUpperCase(), isbn, description, notes, cover, date, rating, user_id]);
           
             res.send({msg: "success"});
         }catch(error){
@@ -307,7 +307,7 @@ app.all("/update_book", async (req, res) => {
 
       
     
-        await db.query("UPDATE books SET book_name = $1, author_name=$2, isbn=$3, description=$4, notes=$5, cover=$6, date=$7, rating=$8 WHERE books_id = $9", [book_name, author_name, isbn, description, notes, cover, date, rating, book_id]);
+        await db.query("UPDATE Book_says.books SET book_name = $1, author_name=$2, isbn=$3, description=$4, notes=$5, cover=$6, date=$7, rating=$8 WHERE books_id = $9", [book_name, author_name, isbn, description, notes, cover, date, rating, book_id]);
         console.log("book updated");
         res.send({msg: "success"});
     } catch (error) {
@@ -325,7 +325,7 @@ app.get("/delete", async(req, res) =>{
     try {
         // Delete the book with the given id
         
-        await db.query("DELETE FROM books WHERE user_id = $1 AND book_name = $2", [id, book_name]);
+        await db.query("DELETE FROM Book_says.books WHERE user_id = $1 AND book_name = $2", [id, book_name]);
       
 
         res.send({msg: "success"});
@@ -341,7 +341,7 @@ passport.use(new Strategy(async function varify(username, password, cb){
         console.log(username+","+password);
 
 
-        const result = await db.query("SELECT * FROM Users WHERE username = $1", [username]);
+        const result = await db.query("SELECT * FROM Book_says.Users WHERE username = $1", [username]);
       
         if(result.rows.length > 0) {
             const user = result.rows[0];
