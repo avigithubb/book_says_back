@@ -8,7 +8,7 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import bcrypt from "bcryptjs";
 import pkg from 'pg';
-import {createClient} from "ioredis";
+import pkgs from "ioredis";
 import connectRedis from "connect-redis";
 
 
@@ -17,8 +17,10 @@ const port = 3000;
 dotenv.config();
 const saltRounds = 10;
 const { Pool } = pkg;
+const {createClient} = pkgs;
 const RedisStore = connectRedis(session);
 const redisClient = createClient;
+
 
 
 const db = new Pool({
