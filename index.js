@@ -53,7 +53,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 const corsOptions = {
-  origin: "https://book-says-up.vercel.app/",
+  origin: "book-says-up.vercel.app",
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization']
 };
