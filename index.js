@@ -45,7 +45,8 @@ app.use(session({
     cookie: {
         maxAge: 1000 * 60 * 60 * 24,
         secure: process.env.NODE_ENV === 'production',  
-        httpOnly: true
+        httpOnly: true,
+        sameSite: 'none'
     }
 }))
 
@@ -53,7 +54,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 const corsOptions = {
-  origin: "book-says-up.vercel.app",
+  origin: ["https://book-says-up.vercel.app", "http://localhost:3000"],
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization']
 };
