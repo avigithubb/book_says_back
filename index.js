@@ -18,7 +18,7 @@ dotenv.config();
 const saltRounds = 10;
 const { Pool } = pkg;
 const {createClient} = pkgs;
-const RedisStore = connectRedis(session);
+const RedisStore = new connectRedis(session);
 const redisClient = createClient;
 
 
