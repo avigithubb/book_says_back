@@ -30,7 +30,7 @@ const db = new Pool({
     },
 });
 
-redisClient.on('error', (err) => console.error('Redis client error', err));
+
 await redisClient.connect().then(() => {
     console.log('Connected to Redis');
   }).catch((err) => {
