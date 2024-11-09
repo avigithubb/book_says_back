@@ -31,7 +31,7 @@ const db = new Pool({
 });
 
 const redisClient = createClient({
-    password: '*******',
+    password: 'jAvx6DwENlvWHrI6BHn33khj4p4AMRCe',
     socket: {
         host: 'redis-15197.c301.ap-south-1-1.ec2.redns.redis-cloud.com',
         port: 15197
