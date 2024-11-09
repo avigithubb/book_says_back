@@ -20,7 +20,7 @@ const saltRounds = 10;
 const { Pool } = pkg;
 // const {createClient} = pkgs;
 // const RedisStore = connectRedis(session);
-const redisClient = createClient;
+
 
 
 const db = new Pool({
@@ -29,6 +29,16 @@ const db = new Pool({
       rejectUnauthorized: false, 
     },
 });
+
+const redisClient = createClient({
+    password: '*******',
+    socket: {
+        host: 'redis-15197.c301.ap-south-1-1.ec2.redns.redis-cloud.com',
+        port: 15197
+    }
+});
+
+redisClient.connect();
 
 
 // await redisClient.connect().then(() => {
